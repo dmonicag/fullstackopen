@@ -4,11 +4,14 @@ import AddPersonForm from './components/AddPersonForm';
 import SearchForm from './components/SearchForm';
 import { useState, useEffect } from 'react';
 import personService from './services/person';
+import Notification from './components/Notification';
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [persons_copy, setCopy] = useState({query : '', list : []})
   const [newPerson, setNewPerson] = useState('')
+  const [notification, setNotification] = useState(null)
+  const [error_notification, setError] = useState(null)
 
   useEffect(() => {
     personService
@@ -42,7 +45,17 @@ const App = () => {
       .then(up_contact => {
         setPersons(persons.map(person => person.id !== id ? person : up_contact))
       })
-      alert(`Contact updated successfully`)
+      .catch(error => {
+        setError(`Contact already removed from server`)
+        setTimeout(()=> {
+          setError(null)
+        }, 5000)
+      })
+     
+      setNotification(`Number updated successfully`)
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
   }
 
 
@@ -59,7 +72,11 @@ const App = () => {
      }
     }
     else if (persons.map(p=> p.number).includes(new_Number)){
-      alert(`${new_Number} already in Phonebook`)
+    
+      setError(`${new_Number} is already in Phonebook`)
+      setTimeout(() => {
+        setError(null)
+      }, 5000)
       setNewPerson({name:'', number:''})
     }
     else{
@@ -67,6 +84,10 @@ const App = () => {
       .createPerson(new_Person)
       .then(createdPerson => {
         setPersons(persons.concat(createdPerson))
+        setNotification(`Contact added successfully`)
+        setTimeout(() => {
+          setNotification(null)
+        }, 5000)
       })
     }
   }
@@ -82,9 +103,18 @@ const App = () => {
       .deletePerson(id, del_contact)
       .then(()=>{
           copy.splice(index, 1)
-          alert(`Contact ${del_contact.name} deleted`)
+         setNotification(`Contact ${del_contact.name} deleted successfully`)
+         setTimeout(() => {
+          setNotification(null)
+         }, 5000)
           setPersons(copy)
         })
+      .catch(error => {
+        setError(`Contact already deleted`)
+        setTimeout(() => {
+          setError(null)
+        }, 5000)
+      })
     }
   }
 
@@ -92,6 +122,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
+      <Notification message={notification} error_message={error_notification}/>
       <AddPersonForm add_contact={add_contact}/>
       <SearchForm persons ={persons} persons_copy={persons_copy} handleSearch={handleSearch} delete_person={delete_person}/>    
     </div>
