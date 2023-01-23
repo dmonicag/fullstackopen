@@ -1,7 +1,6 @@
 import DisplayContacts from "./DisplayContacts";
 
 const SearchForm = ({persons, persons_copy, handleSearch, delete_person}) => {
-  //console.log("enter search form")
  
     return (
       <div>
@@ -25,8 +24,3 @@ const SearchForm = ({persons, persons_copy, handleSearch, delete_person}) => {
   }
 
 export default SearchForm;
-
-/* 
-     (
-              <DisplayContacts key={persons_copy.list.id} contacts={persons_copy.list} deleteContact={()=>delete_person(persons_copy.list.id)}/>
-            ))} */

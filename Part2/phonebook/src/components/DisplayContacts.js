@@ -1,6 +1,5 @@
 const DisplayContacts = ({contacts, deleteContact}) => {
-   // console.log("display")
-    //console.log(contacts)
+
     return (
       <div>
         <ul>
@@ -14,11 +13,3 @@ const DisplayContacts = ({contacts, deleteContact}) => {
     )
   }
 export default DisplayContacts;  
-
-/*
-
-  {contacts.map(p => (
-            <li key={p.id}>{p.name} {p.number}
-            <button onClick={deleteContact} value={p.id}>Delete</button>
-            </li>
-          ))}*/
