@@ -13,12 +13,10 @@ const CountryForm = ({handleSearch, results, show_info}) => {
                 results.countries_list.length !== 1 ?
 
                 results.countries_list.map((r) => (<li>{r.name.common}
-                                                        <button value={r.ccn3} onClick={show_info}>Show</button></li>)) 
+                                                    <button value={r.ccn3} onClick={show_info}>Show</button></li>)) 
                 :
-                results.countries_list.map((r) => (<CountryInfo country_info={r}/>) )
-                
+                results.countries_list.map((r) => (<CountryInfo country_info={r}/>))                
             }
-
             </ul>
         </div>
     )
