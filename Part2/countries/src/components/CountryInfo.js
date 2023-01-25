@@ -1,15 +1,6 @@
 import WeatherInfo from "./WeatherInfo";
-import countriesService from "../services/countries";
 
 const CountryInfo = ({country_info}) => {
-    const flagUrl = country_info.flags.png
-    
-    countriesService
-    .getFlag(flagUrl)
-    .then(i => {                   
-        var Flag_Url = URL.createObjectURL(i);
-        document.querySelector("#image_flag").src = Flag_Url;
-    })    
     
     return (
         <div>
@@ -22,7 +13,7 @@ const CountryInfo = ({country_info}) => {
                     <div key={country_info.ccn3}>{value}</div>)}
                 </p>
                 <p>
-                <img id="image_flag"/>
+                <img src={country_info.flags.png}></img>
                 </p>
                 <p> <h2>Weather in {country_info.capital}</h2></p>
             </div>

@@ -7,8 +7,4 @@ const getAll = () => {
     return request.then(response => response.data)
 }
 
-const getFlag = (flagUrl) => {
-    const request = axios.get(flagUrl, {responseType: "blob"})
-    return request.then(response => response.data)
-}
-export default { getAll, getFlag };
+export default { getAll };

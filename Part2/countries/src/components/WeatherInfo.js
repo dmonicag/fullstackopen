@@ -25,12 +25,12 @@ const WeatherInfo = ({capital_city}) => {
             document.querySelector("#image").src = imageUrl;
         })
     }
-   
+    
     if(!weather){ return null }
 
     return (
         <div>     
-            <p><b>Temperature:</b> {weather.main.temp}</p>
+            <p><b>Temperature:</b> {(weather.main.temp - 273.15).toFixed(2)} c</p>
             <p>
                 <table><tbody><tr>
                     <td><b>{weather.weather[0].description}</b></td>
