@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import countriesService from './services/countries';
 import CountryForm from './components/CountryForm';
