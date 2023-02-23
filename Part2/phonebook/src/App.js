@@ -64,14 +64,6 @@ const App = () => {
     const new_Number = event.target.number.value
     const new_Person = {name: new_Name, number: new_Number}
 
-  if(!new_Name && !new_Number){
-    setError(`Cannot add contact. Please fill in the Name`)
-    setTimeout(() => {
-      setError(null)
-    }, 5000)
-  }
-  else{
-
     if (persons.map(p => p.name).includes(new_Name) ){
      if(window.confirm(`${new_Name} already in Phonebook. Replace old number with new one?`)){
         update_contact(new_Name, new_Number)
@@ -94,10 +86,16 @@ const App = () => {
           setNotification(null)
         }, 5000)
       })
+      .catch(error => {
+        setError(error.response.data.error)
+        setTimeout(() => {
+          setNotification(null)
+        }, 5000)
+      })
     }
     event.target.reset()
   }
-  }
+  
 
   const delete_person = (id) => {
     const del_contact = persons.find(p => p.id === id)
