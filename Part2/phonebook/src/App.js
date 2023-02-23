@@ -9,7 +9,6 @@ import Notification from './components/Notification';
 const App = () => {
   const [persons, setPersons] = useState([])
   const [persons_copy, setCopy] = useState({query : '', list : []})
-  const [newPerson, setNewPerson] = useState('')
   const [notification, setNotification] = useState(null)
   const [error_notification, setError] = useState(null)
 
@@ -52,7 +51,7 @@ const App = () => {
         }, 5000)
       })
      
-      setNotification(`Number updated successfully`)
+      setNotification(`Number for ${person_to_update.name} updated successfully`)
       setTimeout(() => {
         setNotification(null)
       }, 5000)
@@ -64,12 +63,19 @@ const App = () => {
     const new_Name = event.target.name.value
     const new_Number = event.target.number.value
     const new_Person = {name: new_Name, number: new_Number}
-  
+
+  if(!new_Name && !new_Number){
+    setError(`Cannot add contact. Please fill in the Name`)
+    setTimeout(() => {
+      setError(null)
+    }, 5000)
+  }
+  else{
+
     if (persons.map(p => p.name).includes(new_Name) ){
      if(window.confirm(`${new_Name} already in Phonebook. Replace old number with new one?`)){
         update_contact(new_Name, new_Number)
-        setNewPerson({name:'', number:''})      
-     }
+      }
     }
     else if (persons.map(p=> p.number).includes(new_Number)){
     
@@ -77,21 +83,21 @@ const App = () => {
       setTimeout(() => {
         setError(null)
       }, 5000)
-      setNewPerson({name:'', number:''})
     }
     else{
       personService
       .createPerson(new_Person)
       .then(createdPerson => {
         setPersons(persons.concat(createdPerson))
-        setNotification(`Contact added successfully`)
+        setNotification(`Contact ${new_Person.name} added successfully`)
         setTimeout(() => {
           setNotification(null)
         }, 5000)
       })
     }
+    event.target.reset()
   }
-
+  }
 
   const delete_person = (id) => {
     const del_contact = persons.find(p => p.id === id)
@@ -117,7 +123,6 @@ const App = () => {
       })
     }
   }
-
 
   return (
     <div>
