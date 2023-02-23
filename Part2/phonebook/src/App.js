@@ -43,18 +43,25 @@ const App = () => {
       .updatePerson(id, changedPerson)
       .then(up_contact => {
         setPersons(persons.map(person => person.id !== id ? person : up_contact))
+        setNotification(`Number for ${person_to_update.name} updated successfully`)
+        setTimeout(() => {
+          setNotification(null)
+        }, 5000)
       })
-      .catch(error => {
+     /* .catch(error => {
         setError(`Contact already removed from server`)
         setTimeout(()=> {
           setError(null)
         }, 5000)
+      })*/
+      .catch(error => {
+        setError(error.response.data.error)
+        setTimeout(() => {
+          setError(null)
+        }, 5000)
       })
      
-      setNotification(`Number for ${person_to_update.name} updated successfully`)
-      setTimeout(() => {
-        setNotification(null)
-      }, 5000)
+     
   }
 
 
@@ -89,7 +96,7 @@ const App = () => {
       .catch(error => {
         setError(error.response.data.error)
         setTimeout(() => {
-          setNotification(null)
+          setError(null)
         }, 5000)
       })
     }
