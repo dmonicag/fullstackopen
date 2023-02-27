@@ -4,6 +4,5 @@ Content-Type: application/json
 {
     "title": "What’s New In Node Js 18?",
     "author": "Mrinal Saraswat",
-    "url": "https://www.bacancytechnology.com/blog/whats-new-in-node-js-18",
-    "likes": "10"
+    "url": "https://www.bacancytechnology.com/blog/whats-new-in-node-js-18"
 }

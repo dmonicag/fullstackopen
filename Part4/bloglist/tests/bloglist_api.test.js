@@ -40,6 +40,22 @@ test('add a new blog to the database', async () => {
     expect(blog_content).toContain('Go To Statement Considered Harmful')
 })
 
+test('property "likes" missing defaults to 0', async () => {
+    const new_blog = {
+        "title": "What’s New In Node Js 18?",
+        "author": "Mrinal Saraswat",
+        "url": "https://www.bacancytechnology.com/blog/whats-new-in-node-js-18"
+    }
+
+    await api.post('/api/blogs')
+            .send(new_blog)
+            .expect(201)
+            .expect('Content-Type', /application\/json/)        
+
+    const blogs = await helper.blogs_in_db()
+    expect(blogs[blogs.length-1].likes).toBe(0)
+})
+
 afterAll(async () => {
     await mongoose.connection.close()
 })
