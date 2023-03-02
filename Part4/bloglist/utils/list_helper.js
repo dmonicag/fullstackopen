@@ -2,16 +2,16 @@ const _ = require('lodash')
 
 const dummy = (blogs) => {
   if(Array.isArray(blogs))
-  return 1
+    return 1
 }
 
 const totalLikes = (blogs) => {
   const listofLikes = blogs.map(blog => blog.likes)
   let sum = 0;
-  for (let i = 0; i < listofLikes.length; i++) 
-    {
-      sum += listofLikes[i];
-    }
+  for (let i = 0; i < listofLikes.length; i++)
+  {
+    sum += listofLikes[i];
+  }
   return sum
 }
 
@@ -25,15 +25,17 @@ const mostBlogs = (blogs) => {
   var authorArray =  _.map(blogs, 'author')
   var mostBlogs_author = _.head(_(authorArray).countBy().entries().maxBy(_.last))
   const a = blogs.filter(b => b.author === mostBlogs_author)
-  var author_blogs = { "author": mostBlogs_author, "blogs": a.length}
+  var author_blogs = { 'author': mostBlogs_author, 'blogs': a.length }
 
   return author_blogs
 }
 
 const mostLikes = (blogs) => {
-  var author_likes = _(blogs).groupBy('author') 
-                     .map((obj, key) => ({'author': key, 'likes': _.sumBy(obj, 'likes')}))
-                     .value()
+  var author_likes = _(blogs).groupBy('author')
+    .map((obj, key) => (
+      { 'author': key, 'likes': _.sumBy(obj, 'likes') }
+    ))
+    .value()
   var maxLikes_auth = _.maxBy(author_likes, 'likes')
   return maxLikes_auth
 }
