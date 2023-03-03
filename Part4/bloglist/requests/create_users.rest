@@ -2,7 +2,45 @@ POST http://localhost:3003/api/users
 Content-Type: application/json
 
 {
-    "username": "helen",
-    "user": "Helen Hema",
-    "password": "peace"
+    "username": "samson",   
+    "user": "Samson D",
+    "password": "Back456"    
+}
+
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "user": "Laila M",
+    "password": "Qwerty34"
+}
+
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "samson",
+    "user": "Sam D",
+    "password": "123DFc"
+}
+
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "paul",
+    "user": "Paul Samuel"
+}
+
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "paul",
+    "user": "Paul M",
+    "password": "paulson"
 }

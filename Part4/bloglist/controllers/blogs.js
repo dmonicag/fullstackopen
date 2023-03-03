@@ -22,7 +22,7 @@ blogsRouter.post('/', async (request, response) => {
   if(!new_blog.title || !new_blog.url){
     return response.status(400)
       .json({
-        error: 'info missing'
+        error: 'title or blog url missing'
       })
   }
   const saved_blog = await new_blog.save()
