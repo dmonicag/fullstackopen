@@ -64,8 +64,16 @@ blogsRouter.put('/:id', async (request, response) => {
 })
 
 blogsRouter.delete('/:id', async (request, response) => {
-  await Blog.findByIdAndRemove(request.params.id)
-  response.status(204).end()
+  const decoded_token = webtoken.verify(request.token, process.env.SECRET)
+  if(!decoded_token.id){
+    return response.status(401).json({ error: 'token invaid' })
+  }
+
+  const blog_to_delete = await Blog.findById(request.params.id)
+
+  if(blog_to_delete.user.toString() === decoded_token.id.toString()){
+    await Blog.findByIdAndRemove(request.params.id)
+    response.status(204).end()}
 })
 
 module.exports = blogsRouter
