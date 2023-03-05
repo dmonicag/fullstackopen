@@ -2,7 +2,6 @@ const Blog = require('../models/bloglist')
 require('express-async-errors')
 const User = require('../models/user')
 const blogsRouter = require('express').Router()
-const webtoken = require('jsonwebtoken')
 require('../utils/middleware')
 
 blogsRouter.get('/', async (request, response) => {
@@ -21,14 +20,7 @@ blogsRouter.get('/:id', async (request, response) => {
 
 blogsRouter.post('/', async (request, response) => {
   const body = request.body
-  const decoded_token = webtoken.verify(request.token, process.env.SECRET)
-
-  if(!decoded_token.id){
-    return response.status(401).json({ error: 'token invaid' })
-  }
-
-  const user = await User.findById(decoded_token.id)
-
+  const user = await User.findOne({ username: request.user })
   const new_blog = new Blog({
     title: body.title,
     author: body.author,
@@ -64,16 +56,16 @@ blogsRouter.put('/:id', async (request, response) => {
 })
 
 blogsRouter.delete('/:id', async (request, response) => {
-  const decoded_token = webtoken.verify(request.token, process.env.SECRET)
-  if(!decoded_token.id){
-    return response.status(401).json({ error: 'token invaid' })
-  }
-
   const blog_to_delete = await Blog.findById(request.params.id)
-
-  if(blog_to_delete.user.toString() === decoded_token.id.toString()){
+  const blog_user = await User.findOne({ username: request.user })
+  if(blog_to_delete.user.toString() === blog_user.id)
+  {
     await Blog.findByIdAndRemove(request.params.id)
-    response.status(204).end()}
+    response.status(204).end()
+  }
+  else{
+    response.status(400).json({ error: 'not authorized to delete' })
+  }
 })
 
 module.exports = blogsRouter

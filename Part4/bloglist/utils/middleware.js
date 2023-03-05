@@ -1,4 +1,6 @@
 const logger = require('./logger')
+const User = require('../models/user')
+const webtoken = require('jsonwebtoken')
 
 const requestLogger = (request, response, next) => {
   logger.info('Method:', request.method)
@@ -37,4 +39,20 @@ const tokenExtractor = (request, response, next) => {
   next()
 }
 
-module.exports = { requestLogger, unknownEndPoint, errorHandler, tokenExtractor }
+const userExtractor = async (request, response, next) => {
+  const decoded_token = webtoken.verify(request.token, process.env.SECRET)
+
+  if(!decoded_token.id){
+    return response.status(401).json({ error: 'token invaid' })
+  }
+  const user = await User.findById(decoded_token.id)
+  request.user = user.username
+  next()
+}
+
+module.exports = {
+  requestLogger,
+  unknownEndPoint,
+  errorHandler,
+  tokenExtractor,
+  userExtractor }
