@@ -1,3 +1,4 @@
+import './App.css';
 import { useState } from 'react'
 
 const Button = (props) => {
@@ -16,8 +17,12 @@ const Display = (props) => {
 const StatisticLine = (props) => {
   return(
     <div>
-      {props.text}&nbsp;
-      {props.value}
+      <table><tbody>
+      <tr>
+        <td>{props.text}</td>
+        <td>{props.value}</td>
+      </tr>
+      </tbody></table>
     </div>
   )
 }
@@ -33,13 +38,13 @@ const Statistics = (props) => {
     )
   }
   return(
-    <div>
+    <div>      
       <StatisticLine text='Good' value={props.good} />
       <StatisticLine text='Neutral' value={props.neutral} />
       <StatisticLine text='Bad' value={props.bad} />
       <StatisticLine text='Total' value={totalfeedback} />
-      <StatisticLine text='Average' value={average} />
-      <StatisticLine text='Positive' value={positivePercentage} />
+      <StatisticLine text='Average' value={average.toFixed(2)} />
+      <StatisticLine text='Positive' value={`${positivePercentage.toFixed(2)}%`} />
     </div>
   )
 }
