@@ -13,9 +13,18 @@ const Display = (props) => {
     </div>
   )
 }
+const StatisticLine = (props) => {
+  return(
+    <div>
+      {props.text}&nbsp;
+      {props.value}
+    </div>
+  )
+}
 const Statistics = (props) => {
   const average = ((props.good*1) + (props.neutral*0) + (props.bad*(-1))) / props.total.length
   const positivePercentage = ((props.good) / props.total.length) * 100
+  const totalfeedback = props.good + props.neutral + props.bad
   if(props.total.length === 0){
     return(
       <div>
@@ -25,12 +34,12 @@ const Statistics = (props) => {
   }
   return(
     <div>
-      <p>Good &nbsp; {props.good}</p>
-      <p>Neutral &nbsp; {props.neutral}</p>
-      <p>Bad &nbsp; {props.bad}</p>
-      <p>Total &nbsp; {props.good + props.neutral + props.bad}</p>
-      <p>Average &nbsp; {average}</p>
-      <p>Positive &nbsp; {positivePercentage}%</p>
+      <StatisticLine text='Good' value={props.good} />
+      <StatisticLine text='Neutral' value={props.neutral} />
+      <StatisticLine text='Bad' value={props.bad} />
+      <StatisticLine text='Total' value={totalfeedback} />
+      <StatisticLine text='Average' value={average} />
+      <StatisticLine text='Positive' value={positivePercentage} />
     </div>
   )
 }
