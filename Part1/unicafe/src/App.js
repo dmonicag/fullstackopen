@@ -5,15 +5,21 @@ const Button = (props) => {
       <button onClick={props.handleClick}>{props.text}</button>
   )
 }
-
-const Display = (props) => {
-  const average = ((props.good*1) + (props.neutral*0) + (props.bad*(-1))) / props.total.length
-  const positivePercentage = ((props.good) / props.total.length) * 100
+const Display = (props) => {  
   return(
     <div>
       <p>Good &nbsp; {props.good}</p>
       <p>Neutral &nbsp; {props.neutral}</p>
       <p>Bad &nbsp; {props.bad}</p>
+      <Statistics good={props.good} neutral={props.neutral} bad={props.bad} total={props.total}/>
+    </div>
+  )
+}
+const Statistics = (props) => {
+  const average = ((props.good*1) + (props.neutral*0) + (props.bad*(-1))) / props.total.length
+  const positivePercentage = ((props.good) / props.total.length) * 100
+  return(
+    <div>
       <p>Total &nbsp; {props.good + props.neutral + props.bad}</p>
       <p>Average &nbsp; {average}</p>
       <p>Positive &nbsp; {positivePercentage}%</p>
