@@ -3,7 +3,7 @@ import { useState } from 'react'
 const Button = (props) => {
   return(
     <div>
-      <button onClick={props.handleClick}>Next anecdote</button>
+      <button onClick={props.handleClick}>{props.text}</button>
     </div>
   )
 }
@@ -20,9 +20,9 @@ const App = () => {
     'The only way to go fast, is to go well.'
   ]   
   const [selected, setSelected] = useState(0)
+
   const showAnecdote = () => {
     const random = Math.floor(Math.random() * (anecdotes.length - 0) + 0)
-    console.log(random)
     setSelected(random)
   }
 
