@@ -36,6 +36,7 @@ const Content = (props) => {
 }
 const Total = (props) => {
   const exercises= props.parts.map(total => total.exercises)
+  //using reduce
   const total = exercises.reduce((a, b) => a + b, 0)
   return (
     <div>
