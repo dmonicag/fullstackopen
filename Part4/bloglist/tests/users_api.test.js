@@ -13,8 +13,9 @@ beforeEach(async () => {
 
 describe('when user db has entries', () => {
   test('retrieving users from db successful', async () => {
-    const users = await api.get('/api/users')
-    const usernames = users.body.map(user => user.username)
+    await api.get('/api/users')
+    const users = await helper.users_in_db()
+    const usernames = users.map(user => user.username)
     expect(usernames).toContain('firstuser')
   })
 

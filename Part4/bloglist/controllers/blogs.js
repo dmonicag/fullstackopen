@@ -2,7 +2,8 @@ const Blog = require('../models/bloglist')
 require('express-async-errors')
 const User = require('../models/user')
 const blogsRouter = require('express').Router()
-require('../utils/middleware')
+const userExtractor = require('../utils/middleware').userExtractor
+const tokenExtractor = require('../utils/middleware').tokenExtractor
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate('user', { username: 1, user: 1 })
@@ -18,9 +19,10 @@ blogsRouter.get('/:id', async (request, response) => {
   }
 })
 
-blogsRouter.post('/', async (request, response) => {
+blogsRouter.post('/', tokenExtractor, userExtractor, async (request, response) => {
   const body = request.body
   const user = await User.findOne({ username: request.user })
+
   const new_blog = new Blog({
     title: body.title,
     author: body.author,
@@ -55,7 +57,7 @@ blogsRouter.put('/:id', async (request, response) => {
   response.status(200).json({ info: 'update successful' })
 })
 
-blogsRouter.delete('/:id', async (request, response) => {
+blogsRouter.delete('/:id', tokenExtractor, userExtractor, async (request, response) => {
   const blog_to_delete = await Blog.findById(request.params.id)
   const blog_user = await User.findOne({ username: request.user })
   if(blog_to_delete.user.toString() === blog_user.id)
@@ -64,7 +66,7 @@ blogsRouter.delete('/:id', async (request, response) => {
     response.status(204).end()
   }
   else{
-    response.status(400).json({ error: 'not authorized to delete' })
+    response.status(401).json({ error: 'Unauthorized' })
   }
 })
 

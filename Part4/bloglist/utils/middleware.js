@@ -31,7 +31,11 @@ const errorHandler = (error, request, response, next) => {
 
 const tokenExtractor = (request, response, next) => {
   const authorization = request.get('Authorization')
-  if(authorization && authorization.startsWith('Bearer '))
+  if(!authorization)
+  {
+    return response.status(401).json({ error: 'Unauthorized' })
+  }
+  else if(authorization && authorization.startsWith('Bearer '))
   {
     const token = authorization.replace('Bearer ', '')
     request.token = token
@@ -41,7 +45,6 @@ const tokenExtractor = (request, response, next) => {
 
 const userExtractor = async (request, response, next) => {
   const decoded_token = webtoken.verify(request.token, process.env.SECRET)
-
   if(!decoded_token.id){
     return response.status(401).json({ error: 'token invaid' })
   }
