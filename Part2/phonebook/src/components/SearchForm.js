@@ -1,7 +1,6 @@
 import DisplayContacts from "./DisplayContacts";
 
-const SearchForm = ({persons, persons_copy, handleSearch, delete_person}) => {
- 
+const SearchForm = ({persons, persons_copy, handleSearch, delete_person}) => { 
     return (
       <div>
         <table><tbody><tr><td>
@@ -19,8 +18,6 @@ const SearchForm = ({persons, persons_copy, handleSearch, delete_person}) => {
               <DisplayContacts key={pers.id} contacts={pers} deleteContact={()=>delete_person(pers.id)}/>
             )))}
       </div>
-    )
-   
+    )   
   }
-
 export default SearchForm;

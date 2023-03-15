@@ -12,5 +12,4 @@ const AddPersonForm = ({add_contact}) => {
       </div>
     )
   }
-
 export default AddPersonForm;

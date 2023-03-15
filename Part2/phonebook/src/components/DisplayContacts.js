@@ -1,13 +1,10 @@
 const DisplayContacts = ({contacts, deleteContact}) => {
-
     return (
       <div>
-        <ul>
-       
+        <ul>       
             <li key={contacts.id}>{contacts.name} {contacts.number}
             <button onClick={deleteContact} value={contacts.id}>Delete</button>
-            </li>
-          
+            </li>          
         </ul>
       </div>
     )

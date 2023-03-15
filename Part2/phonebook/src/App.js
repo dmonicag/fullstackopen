@@ -1,5 +1,4 @@
 import './App.css';
-
 import AddPersonForm from './components/AddPersonForm';
 import SearchForm from './components/SearchForm';
 import { useState, useEffect } from 'react';
@@ -18,8 +17,7 @@ const App = () => {
       .then(initialState => {
         setPersons(initialState)
       })
-  }, [])
-  
+  }, [])  
 
   const handleSearch = (event) => {
     const search_input = event.target.value
@@ -34,7 +32,6 @@ const App = () => {
     setCopy({query : search_input, list: search_results})
   }
 
-
   const update_contact = (name, number) => {
     const person_to_update = persons.find(p=> p.name === name)
     const id = person_to_update.id
@@ -48,25 +45,16 @@ const App = () => {
           setNotification(null)
         }, 5000)
       })
-     /* .catch(error => {
-        setError(`Contact already removed from server`)
-        setTimeout(()=> {
-          setError(null)
-        }, 5000)
-      })*/
       .catch(error => {
-        setError(error.response.data.error)
+        setError(`Contact already deleted from the server`)
         setTimeout(() => {
-          setError(null)
+         setError(null)
         }, 5000)
-      })
-     
-     
+      })     
   }
 
-
   const add_contact = (event) => {
-    event. preventDefault()
+    event.preventDefault()
     const new_Name = event.target.name.value
     const new_Number = event.target.number.value
     const new_Person = {name: new_Name, number: new_Number}
@@ -76,8 +64,7 @@ const App = () => {
         update_contact(new_Name, new_Number)
       }
     }
-    else if (persons.map(p=> p.number).includes(new_Number)){
-    
+    else if (persons.map(p=> p.number).includes(new_Number)){    
       setError(`${new_Number} is already in Phonebook`)
       setTimeout(() => {
         setError(null)
@@ -102,7 +89,6 @@ const App = () => {
     }
     event.target.reset()
   }
-  
 
   const delete_person = (id) => {
     const del_contact = persons.find(p => p.id === id)
@@ -138,5 +124,4 @@ const App = () => {
     </div>
   )
 }
-
 export default App;
