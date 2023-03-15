@@ -1,36 +1,33 @@
 const Course = (props) => {
   return(
     <div>
-      <Header course={props.course} />
       <Content course={props.course} />
-      <Total parts={props.course.parts} />
-    </div>
-  )
-}
-const Header = (props) => {
-  return(
-    <div>
-      <h1>
-        {props.course.name}
-      </h1>
-    </div>
-  )
-}
-const Part = (props) => {
-  return(
-    <div>
-        {props.part.map(p => 
-          <p key={p.id}>
-            {p.name}&nbsp;&nbsp;
-            {p.exercises}
-          </p>)}
     </div>
   )
 }
 const Content = (props) => {
   return(
+   <div>
+    {props.course.map(c => 
+      <div key={c.id}>
+       <Header course={c}/>
+        {
+         c.parts.map(p =>
+          <p key={p.id}>
+           {p.name}&nbsp;&nbsp;{p.exercises}           
+          </p>)
+        }
+        <Total parts={c.parts}/>
+      </div>)}
+   </div>
+  )
+}
+const Header = (props) => {
+  return(
     <div>
-      <Part part={props.course.parts}/>
+      <h2>
+      {props.course.name}
+      </h2>
     </div>
   )
 }
@@ -46,7 +43,8 @@ const Total = (props) => {
 }
 
 const App = () => {
-  const course = {
+  const course = [
+    {
     id: 1,
     name: 'Half Stack application development',
     parts: [
@@ -66,8 +64,29 @@ const App = () => {
         id: 3
       },
     ]
-  }
-  return <Course course={course} />
+  },
+  {
+    name: 'Node.js',
+    id: 2,
+    parts: [
+      {
+        name: 'Routing',
+        exercises: 3,
+        id: 1
+      },
+      {
+        name: 'Middlewares',
+        exercises: 7,
+        id: 2
+      }
+    ]
+  },
+  ]
+  return (
+   <div>
+    <h1>Web development curriculum</h1>
+    <Course course={course} />
+   </div>
+  )
 }
-
 export default App
