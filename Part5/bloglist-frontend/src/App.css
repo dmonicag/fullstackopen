@@ -17,3 +17,13 @@
    padding: 10px;
    margin-bottom: 10px;
   }
+
+  table {
+    width: 50%;
+    border-collapse: collapse;
+  }
+
+  td, th {
+    text-align: left;
+    width: 50%;
+  }
