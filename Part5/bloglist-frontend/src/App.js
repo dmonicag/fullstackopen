@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import './App.css'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
@@ -6,14 +6,17 @@ import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 
 const App = () => {
+
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [error_notif, setError] = useState(null)
   const [notif, setNotification] = useState(null)
+  const blogFormRef = useRef()
 
   useEffect(() => {
       blogService.getAll().then(blogs =>
@@ -63,6 +66,7 @@ const App = () => {
     const author = event.target.author.value
     const url = event.target.url.value
     const newBlog = {title: title, author:author, url:url}
+    blogFormRef.current.changeVisibility()
 
     blogService
     .create(newBlog)
@@ -89,7 +93,7 @@ return(
     {user === null ? 
     ( <>
       <h2>Log in to the application</h2>
-     <LoginForm handleLogin={handleLogin}/>
+     <LoginForm handleLogin={handleLogin} />
       </>
     ) 
     :
@@ -98,7 +102,9 @@ return(
         Logged in as {user.user.user}&nbsp;
         <button onClick={handleLogout}>Log Out</button>
       </p>
-      <BlogForm addBlog={addBlog}/>
+      <Togglable buttonLabel='Add Blog' ref={blogFormRef}>
+        <BlogForm handleSubmit={addBlog} />
+      </Togglable>
       <h2>List of blogs</h2>
         {blogs.map(blog =>
           <Blog key={blog.id} blog={blog} />

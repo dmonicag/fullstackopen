@@ -1,6 +1,6 @@
-const BlogForm = ({addBlog}) => {
+const BlogForm = ({handleSubmit}) => {
   return(
-    <form onSubmit={addBlog}>
+    <form onSubmit={handleSubmit}>
       <div>
         <h2>Add a new Blog</h2>
         <p>Title: <input type='text' name='title'/></p>
