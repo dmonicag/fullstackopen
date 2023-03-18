@@ -1,6 +1,18 @@
-const BlogForm = ({handleSubmit}) => {
+const BlogForm = ({createBlog}) => {
+
+  const addBlog = (event) => {
+    event.preventDefault()
+    const title = event.target.title.value 
+    const author = event.target.author.value
+    const url = event.target.url.value
+    createBlog({title: title, 
+                author:author, 
+                url:url})
+    event.target.reset()
+  }
+    
   return(
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={addBlog}>
       <div>
         <h2>Add a new Blog</h2>
         <p>Title: <input type='text' name='title'/></p>
@@ -10,5 +22,6 @@ const BlogForm = ({handleSubmit}) => {
       </div>
     </form>
   )
+  
 }
 export default BlogForm

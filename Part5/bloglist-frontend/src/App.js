@@ -9,10 +9,7 @@ import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 
 const App = () => {
-
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [error_notif, setError] = useState(null)
   const [notif, setNotification] = useState(null)
@@ -32,19 +29,14 @@ const App = () => {
     }
   }, [])
 
-  const handleLogin = async (event) => {
-    event.preventDefault()
-    const username = event.target.Username.value
-    const password = event.target.Password.value
+  const handleLogin = async (loginObject) => {
     try{
-      const user = await loginService.login({ username, password })
+      const user = await loginService.login(loginObject)
       window.localStorage.setItem(
         'loggedUser', JSON.stringify(user)
       )
       blogService.setToken(user.token)
       setUser(user)
-      setUsername('')
-      setPassword('')
     }
     catch(exception){
       setError('Wrong username or password')
@@ -60,19 +52,13 @@ const App = () => {
     window.location.reload()
   }
 
-  const addBlog = (event) => {
-    event.preventDefault()
-    const title = event.target.title.value 
-    const author = event.target.author.value
-    const url = event.target.url.value
-    const newBlog = {title: title, author:author, url:url}
+  const addBlog = (blogObject) => {
     blogFormRef.current.changeVisibility()
-
     blogService
-    .create(newBlog)
+    .create(blogObject)
     .then(createdBlog => {
       setBlogs(blogs.concat(createdBlog))
-      setNotification(`Blog '${newBlog.title}' added successfully`)
+      setNotification(`Blog '${blogObject.title}' added successfully`)
       setTimeout(() => {
         setNotification(null)
       }, 5000)
@@ -82,8 +68,7 @@ const App = () => {
       setTimeout(() => {
         setError(null)
       }, 5000)
-    })      
-    event.target.reset()
+    })
 }  
 
 return(
@@ -93,7 +78,7 @@ return(
     {user === null ? 
     ( <>
       <h2>Log in to the application</h2>
-     <LoginForm handleLogin={handleLogin} />
+     <LoginForm createLogin={handleLogin} />
       </>
     ) 
     :
@@ -103,7 +88,7 @@ return(
         <button onClick={handleLogout}>Log Out</button>
       </p>
       <Togglable buttonLabel='Add Blog' ref={blogFormRef}>
-        <BlogForm handleSubmit={addBlog} />
+        <BlogForm createBlog={addBlog} />
       </Togglable>
       <h2>List of blogs</h2>
         {blogs.map(blog =>
