@@ -106,7 +106,9 @@ return(
         <BlogForm createBlog={addBlog} />
       </Togglable>
       <h2>List of blogs</h2>
-        {blogs.map(blog =>
+      {blogs
+        .sort((a, b) => b.likes - a.likes)
+        .map(blog =>
           <Blog key={blog.id} blogs={blog} handleLike={()=>updateLike(blog.id)} />
         )}
       </>
