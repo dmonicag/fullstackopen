@@ -17,7 +17,7 @@ const App = () => {
 
   useEffect(() => {
       blogService.getAll().then(blogs =>
-      setBlogs( blogs )
+      setBlogs(blogs)
     )  
   }, [])
 
@@ -52,24 +52,39 @@ const App = () => {
     window.location.reload()
   }
 
-  const addBlog = (blogObject) => {
+  const addBlog = async (blogObject) => {
     blogFormRef.current.changeVisibility()
-    blogService
-    .create(blogObject)
-    .then(createdBlog => {
+    try{
+      const createdBlog = await blogService.create(blogObject)
       setBlogs(blogs.concat(createdBlog))
       setNotification(`Blog '${blogObject.title}' added successfully`)
       setTimeout(() => {
         setNotification(null)
       }, 5000)
-    })
-    .catch(error => {
+    }    
+    catch(error) {
       setError(error.response.data.error)
       setTimeout(() => {
         setError(null)
       }, 5000)
-    })
-}  
+    }
+} 
+
+const updateLike = async (id) => {
+  const blogToUpdate = blogs.find(b => b.id === id)
+  const like = blogToUpdate.likes
+  const likeObject = {...blogToUpdate, likes: like+1}
+  try{
+    await blogService.updateLikes(likeObject, id)
+    const updatedObject = blogs.map(blog => blog.id !== likeObject.id ? blog : likeObject)
+    setBlogs(updatedObject)
+  }
+  catch(error){
+    setError(error.response.data.error)
+    setTimeout(() => {
+      setError(null)
+     }, 5000)
+  }}
 
 return(
   <div>
@@ -92,7 +107,7 @@ return(
       </Togglable>
       <h2>List of blogs</h2>
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blogs={blog} handleLike={()=>updateLike(blog.id)} />
         )}
       </>
     )
