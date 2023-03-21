@@ -1,5 +1,4 @@
 const BlogForm = ({createBlog}) => {
-
   const addBlog = (event) => {
     event.preventDefault()
     const title = event.target.title.value 
@@ -10,7 +9,6 @@ const BlogForm = ({createBlog}) => {
                 url:url})
     event.target.reset()
   }
-    
   return(
     <form onSubmit={addBlog}>
       <div>

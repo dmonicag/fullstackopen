@@ -30,3 +30,11 @@
   span {
     display: block;
   }
+
+  .deletebtn {
+    color: red;
+}
+
+.likebtn {
+  color: green;
+}

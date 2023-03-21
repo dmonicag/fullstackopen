@@ -1,6 +1,7 @@
 import {  useState } from "react"
+import blogService from '../services/blogs'
 
-const Blog = ({blogs, handleLike}) => {
+const Blog = ({blog, addLike, handleDelete, user}) => {
   const [blogsview, setblogView] = useState(false)
   const hideWhenVisible = { display: blogsview ? 'none' : '' }
   const showWhenVisible = { display: blogsview ? '' : 'none' }
@@ -13,27 +14,42 @@ const Blog = ({blogs, handleLike}) => {
     marginBottom: 5,
   }
 
+  const handleLike = async () => {
+    const blogs = await blogService.getAll()
+    const blogToUpdate = blogs.find(b => b.id === blog.id)
+    const likeObject = {...blogToUpdate, likes: blogToUpdate.likes+1}
+    addLike(likeObject, blogToUpdate.id)
+  }
+
+  const userAddedBlog = blog.user.map(b => b.id)
+
   return(
   <div style={blogStyle}>
-    {blogs.title}
+    {blog.title}
       &ensp;
       <button onClick={() => setblogView(true)} style={hideWhenVisible}>View</button>
       <button onClick={() => setblogView(false)} style={showWhenVisible}>Hide</button>
       <div style={showWhenVisible}>              
         <span>
-          <b>Author: </b> {blogs.author}
+          <b>Author: </b> {blog.author}
         </span>
         <span>
-          <b>Url: </b>{blogs.url}
+          <b>Url: </b>{blog.url}
         </span>
         <span>
-          <b>Likes: </b>{blogs.likes}&nbsp;
-          <button onClick={handleLike}>like</button>
+          <b>Likes: </b>{blog.likes}&nbsp;
+          <button className="likebtn" onClick={handleLike}>like</button>
         </span>
         <span>
-          <b>Added by: </b>
-          {blogs.user.map(b => b.user)}
-        </span>
+          <b>Added by: </b> 
+          {blog.user.map(b => b.user)}
+          &ensp;                  
+          {(user.user.id === userAddedBlog.toString()) ?
+            <button className="deletebtn" onClick={handleDelete} style={showWhenVisible}>Remove</button>
+            :
+            null
+          }
+        </span>        
       </div>
   </div>    
 )}
