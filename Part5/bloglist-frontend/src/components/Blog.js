@@ -22,7 +22,8 @@ const Blog = ({ blog, addLike, handleDelete, user }) => {
     addLike(likeObject, blogToUpdate.id)
   }
 
-  const userAddedBlog = blog.user.map(b => b.id)
+  //const userAddedBlog = blog.user.map(b => b.id)
+  const userAddedBlog = blog.user.id
 
   Blog.propTypes = {
     blog: PropTypes.object.isRequired,
@@ -33,14 +34,13 @@ const Blog = ({ blog, addLike, handleDelete, user }) => {
 
   return(
     <div style={blogStyle}>
-      {blog.title}
+      <div className="blog">
+        <b>{blog.title}</b> - {blog.author}
       &ensp;
-      <button onClick={() => setblogView(true)} style={hideWhenVisible}>View</button>
-      <button onClick={() => setblogView(false)} style={showWhenVisible}>Hide</button>
+        <button onClick={() => setblogView(true)} style={hideWhenVisible}>View</button>
+        <button onClick={() => setblogView(false)} style={showWhenVisible}>Hide</button>
+      </div>
       <div style={showWhenVisible}>
-        <span>
-          <b>Author: </b> {blog.author}
-        </span>
         <span>
           <b>Url: </b>{blog.url}
         </span>
@@ -50,9 +50,9 @@ const Blog = ({ blog, addLike, handleDelete, user }) => {
         </span>
         <span>
           <b>Added by: </b>
-          {blog.user.map(b => b.user)}
+          {blog.user.user}
           &ensp;
-          {(user.user.id === userAddedBlog.toString()) ?
+          {(user.user.id === userAddedBlog) ?
             <button className="deletebtn" onClick={handleDelete} style={showWhenVisible}>Remove Blog</button>
             :
             null
