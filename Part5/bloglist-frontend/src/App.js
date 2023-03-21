@@ -14,13 +14,13 @@ const App = () => {
   const [error_notif, setError] = useState(null)
   const [notif, setNotification] = useState(null)
   const [refreshData, setRefreshData] = useState(false)
-  const blogFormRef = useRef() 
-   
+  const blogFormRef = useRef()
+
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
-   )}, [refreshData])  
+    )}, [refreshData])
 
   useEffect(() => {
     const userJSON = window.localStorage.getItem('loggedUser')
@@ -32,17 +32,17 @@ const App = () => {
   const notifySuccess = (message) => {
     setNotification(message)
     setTimeout(() => {
-    setNotification(null)
+      setNotification(null)
     }, 5000)
   }
-  
+
   const notifyError = (error_message) => {
     setError(error_message)
     setTimeout(() => {
-    setError(null)
+      setError(null)
     }, 5000)
   }
-  
+
   const handleLogin = async (loginObject) => {
     try{
       const user = await loginService.login(loginObject)
@@ -69,12 +69,12 @@ const App = () => {
       const createdBlog = await blogService.create(blogObject)
       setBlogs(blogs.concat(createdBlog))
       notifySuccess(`Blog '${blogObject.title}' added successfully`)
-    }    
+    }
     catch(error) {
       notifyError(error.response.data.error)
     }
     setRefreshData(!refreshData)
-  } 
+  }
 
   const updateLike = async (likeObject, id) => {
     try{
@@ -87,7 +87,7 @@ const App = () => {
     }
   }
 
-  const deleteBlog = async (id) => {    
+  const deleteBlog = async (id) => {
     const blogtoDelete = blogs.find(b => b.id === id)
     const copy=[...blogs]
     const index = blogs.indexOf(blogtoDelete)
@@ -96,7 +96,7 @@ const App = () => {
         await blogService.deleteBlog(id)
         copy.splice(index, 1)
         setBlogs(copy)
-        notifySuccess(`Blog deleted successfully`)
+        notifySuccess('Blog deleted successfully')
       }
       catch(error){
         notifyError(error.response.data.error)
@@ -104,17 +104,17 @@ const App = () => {
     }
   }
 
-  const displayBlog = () => ( 
+  const displayBlog = () => (
     <div>
       <h2>List of blogs</h2>
-        {blogs
-        .sort((a, b) => b.likes - a.likes)      
+      {blogs
+        .sort((a, b) => b.likes - a.likes)
         .map(blog =>
-          <Blog key={blog.id} 
-                blog={blog}
-                addLike={updateLike}
-                handleDelete={()=>deleteBlog(blog.id)}
-                user={user}
+          <Blog key={blog.id}
+            blog={blog}
+            addLike={updateLike}
+            handleDelete={() => deleteBlog(blog.id)}
+            user={user}
           />
         )}
     </div>
@@ -127,29 +127,29 @@ const App = () => {
     </div>
   )
 
-  const displayBlogList = () => (  
+  const displayBlogList = () => (
     <div>
       <p>
         Logged in as {user.user.user}&nbsp;
         <button onClick={handleLogout}>Log Out</button>
       </p>
       <Togglable buttonLabel='Add Blog' ref={blogFormRef}>
-      <BlogForm createBlog={addBlog} />      
-      </Togglable>      
+        <BlogForm createBlog={addBlog} />
+      </Togglable>
       {displayBlog()}
     </div>
   )
 
-return(
-  <div>
-    <h1>BlogList App</h1>    
-    <Notification error_message={error_notif} message={notif}/>
-    {user === null ? 
-    displayLoginForm()
-    :
-    displayBlogList()
-    }
-  </div>
-)}
+  return(
+    <div>
+      <h1>BlogList App</h1>
+      <Notification error_message={error_notif} message={notif}/>
+      {user === null ?
+        displayLoginForm()
+        :
+        displayBlogList()
+      }
+    </div>
+  )}
 
 export default App

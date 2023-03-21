@@ -1,12 +1,12 @@
-const BlogForm = ({createBlog}) => {
+const BlogForm = ({ createBlog }) => {
   const addBlog = (event) => {
     event.preventDefault()
-    const title = event.target.title.value 
+    const title = event.target.title.value
     const author = event.target.author.value
     const url = event.target.url.value
-    createBlog({title: title, 
-                author:author, 
-                url:url})
+    createBlog({ title: title,
+      author:author,
+      url:url })
     event.target.reset()
   }
   return(
@@ -19,6 +19,6 @@ const BlogForm = ({createBlog}) => {
         <p><button type='submit'>Add Blog</button></p>
       </div>
     </form>
-  )  
+  )
 }
 export default BlogForm

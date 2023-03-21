@@ -1,7 +1,8 @@
-import {  useState } from "react"
+import {  useState } from 'react'
 import blogService from '../services/blogs'
+import PropTypes from 'prop-types'
 
-const Blog = ({blog, addLike, handleDelete, user}) => {
+const Blog = ({ blog, addLike, handleDelete, user }) => {
   const [blogsview, setblogView] = useState(false)
   const hideWhenVisible = { display: blogsview ? 'none' : '' }
   const showWhenVisible = { display: blogsview ? '' : 'none' }
@@ -17,19 +18,26 @@ const Blog = ({blog, addLike, handleDelete, user}) => {
   const handleLike = async () => {
     const blogs = await blogService.getAll()
     const blogToUpdate = blogs.find(b => b.id === blog.id)
-    const likeObject = {...blogToUpdate, likes: blogToUpdate.likes+1}
+    const likeObject = { ...blogToUpdate, likes: blogToUpdate.likes+1 }
     addLike(likeObject, blogToUpdate.id)
   }
 
   const userAddedBlog = blog.user.map(b => b.id)
 
+  Blog.propTypes = {
+    blog: PropTypes.object.isRequired,
+    addLike: PropTypes.func.isRequired,
+    handleDelete: PropTypes.func.isRequired,
+    user: PropTypes.object.isRequired
+  }
+
   return(
-  <div style={blogStyle}>
-    {blog.title}
+    <div style={blogStyle}>
+      {blog.title}
       &ensp;
       <button onClick={() => setblogView(true)} style={hideWhenVisible}>View</button>
       <button onClick={() => setblogView(false)} style={showWhenVisible}>Hide</button>
-      <div style={showWhenVisible}>              
+      <div style={showWhenVisible}>
         <span>
           <b>Author: </b> {blog.author}
         </span>
@@ -41,16 +49,16 @@ const Blog = ({blog, addLike, handleDelete, user}) => {
           <button className="likebtn" onClick={handleLike}>like</button>
         </span>
         <span>
-          <b>Added by: </b> 
+          <b>Added by: </b>
           {blog.user.map(b => b.user)}
-          &ensp;                  
+          &ensp;
           {(user.user.id === userAddedBlog.toString()) ?
-            <button className="deletebtn" onClick={handleDelete} style={showWhenVisible}>Remove</button>
+            <button className="deletebtn" onClick={handleDelete} style={showWhenVisible}>Remove Blog</button>
             :
             null
           }
-        </span>        
+        </span>
       </div>
-  </div>    
-)}
+    </div>
+  )}
 export default Blog
