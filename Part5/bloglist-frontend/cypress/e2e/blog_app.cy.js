@@ -38,4 +38,29 @@ describe('Blog app', function () {
       cy.get('html').should('not.contain', 'Logged in as Helen Hema')
     })
   })
+
+  describe('When logged in', function() {
+    beforeEach(function() {
+      cy.get('#username').type('helen')
+      cy.get('#password').type('Hema123')
+      cy.get('#loginbtn').click()
+    })
+
+    it('A new blog can be created', function() {
+      cy.contains('Add Blog').click()
+
+      cy.get('#title').type('new blog')
+      cy.get('#author').type('new author')
+      cy.get('#url').type('www.newblog.com')
+
+      cy.get('#add-blog').click()
+
+      cy.get('.notification')
+        .should('contain', 'added successfully')
+        .should('have.css', 'color', 'rgb(0, 128, 0)')
+        .should('have.css', 'border-style', 'solid')
+
+      cy.get('html').should('contain', 'new blog - new author')
+    })
+  })
 })
