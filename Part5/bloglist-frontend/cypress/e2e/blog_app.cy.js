@@ -1,14 +1,10 @@
 describe('Blog app', function () {
   beforeEach(function (){
-    cy.request('POST', 'http://localhost:3003/api/testing/reset')
+    cy.request('POST', `${Cypress.env('BACKEND')}/testing/reset`)
 
-    const user = {
-      user: 'Helen Hema',
-      username: 'helen',
-      password: 'Hema123' }
-    cy.request('POST', 'http://localhost:3003/api/users', user)
-
-    cy.visit('http://localhost:3000')
+    cy.createUser({ user: 'User One', username: 'userone', password: 'One123' })
+    cy.createUser({ user: 'User Two', username: 'usertwo', password: 'Two123' })
+    cy.visit('')
   })
 
   it('login page can be opened', function() {
@@ -18,16 +14,16 @@ describe('Blog app', function () {
 
   describe('Login',function() {
     it('succeeds with correct credentials', function() {
-      cy.get('#username').type('helen')
-      cy.get('#password').type('Hema123')
+      cy.get('#username').type('userone')
+      cy.get('#password').type('One123')
       cy.get('#loginbtn').click()
 
-      cy.contains('Logged in as Helen Hema')
+      cy.contains('Logged in as User One')
     })
 
     it('fails with wrong credentials', function() {
-      cy.get('#username').type('helen')
-      cy.get('#password').type('hema')
+      cy.get('#username').type('userone')
+      cy.get('#password').type('userone123')
       cy.get('#loginbtn').click()
 
       cy.get('.notification-error')
@@ -35,18 +31,23 @@ describe('Blog app', function () {
         .should('have.css', 'color', 'rgb(255, 0, 0)')
         .should('have.css', 'border-style', 'solid')
 
-      cy.get('html').should('not.contain', 'Logged in as Helen Hema')
+      cy.get('html').should('not.contain', 'Logged in as User One')
     })
   })
 
   describe('When logged in', function() {
     beforeEach(function() {
-      cy.get('#username').type('helen')
-      cy.get('#password').type('Hema123')
-      cy.get('#loginbtn').click()
+      cy.loginUser({ username:'usertwo', password:'Two123' })
+      cy.createBlog({ title:'test1', author:'test1', url:'test1.com' })
+      cy.createBlog({ title:'test2', author:'test2', url:'test2.com' })
+      cy.createBlog({ title:'test3', author:'test3', url:'test3.com' })
+      cy.logoutUser()
     })
 
     it('A new blog can be created', function() {
+      cy.get('#username').type('userone')
+      cy.get('#password').type('One123')
+      cy.get('#loginbtn').click()
       cy.contains('Add Blog').click()
 
       cy.get('#title').type('new blog')
@@ -61,6 +62,13 @@ describe('Blog app', function () {
         .should('have.css', 'border-style', 'solid')
 
       cy.get('html').should('contain', 'new blog - new author')
+    })
+
+    it('a user can like a blog', function() {
+      cy.loginUser({ username:'userone', password:'One123' })
+      cy.get('#view').click()
+      cy.get('#like').click()
+      cy.get('html').should('contain', 'Likes: 1')
     })
   })
 })

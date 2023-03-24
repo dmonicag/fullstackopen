@@ -22,7 +22,6 @@ const Blog = ({ blog, addLike, handleDelete, user }) => {
     addLike(likeObject, blogToUpdate.id)
   }
 
-  //const userAddedBlog = blog.user.map(b => b.id)
   const userAddedBlog = blog.user.id
 
   Blog.propTypes = {
@@ -37,8 +36,8 @@ const Blog = ({ blog, addLike, handleDelete, user }) => {
       <div className="blog">
         <b>{blog.title}</b> - {blog.author}
       &ensp;
-        <button onClick={() => setblogView(true)} style={hideWhenVisible}>View</button>
-        <button onClick={() => setblogView(false)} style={showWhenVisible}>Hide</button>
+        <button onClick={() => setblogView(true)} style={hideWhenVisible} id="view">View</button>
+        <button onClick={() => setblogView(false)} style={showWhenVisible} id="hide">Hide</button>
       </div>
       <div style={showWhenVisible} className="blog_detail">
         <span>
@@ -46,14 +45,14 @@ const Blog = ({ blog, addLike, handleDelete, user }) => {
         </span>
         <span>
           <b>Likes: </b>{blog.likes}&nbsp;
-          <button className="likebtn" onClick={handleLike}>like</button>
+          <button className="likebtn" id="like" onClick={handleLike}>like</button>
         </span>
         <span>
           <b>Added by: </b>
           {blog.user.user}
           &ensp;
           {(user.user.id === userAddedBlog) ?
-            <button className="deletebtn" onClick={handleDelete} style={showWhenVisible}>Remove Blog</button>
+            <button className="deletebtn" id="delete" onClick={handleDelete} style={showWhenVisible}>Remove Blog</button>
             :
             null
           }
