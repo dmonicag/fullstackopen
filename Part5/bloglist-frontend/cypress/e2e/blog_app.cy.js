@@ -98,5 +98,30 @@ describe('Blog app', function () {
       cy.contains('div.blog', 'delete blog').find('#view').click()
       cy.contains('Remove Blog')
     })
+
+    it('blogs are ordered according to number of likes', function() {
+      cy.loginUser({ username:'userone', password:'One123' })
+
+      cy.contains('div.blog', 'test1').find('#view').click()
+      for(let n = 0; n < 2; n ++){
+        cy.contains('div.blog_detail', 'test1').find('#like').click()
+        cy.wait(1000)
+      }
+
+      cy.contains('div.blog', 'test2').find('#view').click()
+      for(let n = 0; n < 4; n ++){
+        cy.contains('div.blog_detail', 'test2').find('#like').click()
+        cy.wait(1000)
+      }
+
+      cy.contains('div.blog', 'test3').find('#view').click()
+      for(let n = 0; n < 3; n ++){
+        cy.contains('div.blog_detail', 'test3').find('#like').click()
+        cy.wait(1000)
+      }
+
+      cy.get('div.blog').eq(0).should('contain', 'test2')
+      cy.get('div.blog').eq(1).should('contain', 'test3')
+    })
   })
 })
