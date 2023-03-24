@@ -86,5 +86,17 @@ describe('Blog app', function () {
         .should('have.css', 'color', 'rgb(0, 128, 0)')
         .should('have.css', 'border-style', 'solid')
     })
+
+    it('only user who created blog can view Remove blog button', function() {
+      cy.loginUser({ username:'userone', password:'One123' })
+
+      cy.createBlog({ title:'delete blog', author:'delete blog', url:'deleteblog.com' })
+
+      cy.contains('div.blog', 'test2').find('#view').click()
+      cy.get('div.blog').should('not.contain', 'Remove Blog')
+
+      cy.contains('div.blog', 'delete blog').find('#view').click()
+      cy.contains('Remove Blog')
+    })
   })
 })
