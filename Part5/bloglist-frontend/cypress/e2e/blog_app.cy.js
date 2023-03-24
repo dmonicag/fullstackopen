@@ -70,5 +70,21 @@ describe('Blog app', function () {
       cy.get('#like').click()
       cy.get('html').should('contain', 'Likes: 1')
     })
+
+    it('only user who created blog can delete it', function() {
+      cy.get('#username').type('usertwo')
+      cy.get('#password').type('Two123')
+      cy.get('#loginbtn').click()
+
+      cy.contains('div.blog', 'test1').find('#view').click()
+      cy.get('#delete').click()
+
+      cy.get('html').should('not.contain', 'test1')
+
+      cy.get('.notification')
+        .should('contain', 'deleted successfully')
+        .should('have.css', 'color', 'rgb(0, 128, 0)')
+        .should('have.css', 'border-style', 'solid')
+    })
   })
 })
