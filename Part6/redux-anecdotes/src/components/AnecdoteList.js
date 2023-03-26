@@ -7,12 +7,12 @@ const AnecdoteList = () => {
       const result = anecdotes.filter(a => a.content.toLowerCase().includes(filter))
       return result
   })  
-  
+
   const dispatch = useDispatch()
 
   const vote = (id) => {
       dispatch(add_vote(id))
-  } 
+  }
 
   return (
     <div>
