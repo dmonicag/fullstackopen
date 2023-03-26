@@ -11,10 +11,10 @@ const AnecdoteForm = () =>{
     event.target.anecdote.value=''
     try{
       dispatch(new_anecdote(anecdote))
-      dispatch(showNotification(`'${anecdote}' added successfully`))      
+      dispatch(showNotification(`'${anecdote}' added successfully`, 5)) 
     }
     catch(error){
-      dispatch(showNotification(error))
+      dispatch(showNotification(error, 5))
     }
   }
 
