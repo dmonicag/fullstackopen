@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useMatch } from 'react-router-dom'
 import Menu from './Components/Menu'
 import Footer from './Components/Footer'
+import Notification from './Components/Notification'
 
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
@@ -28,9 +29,11 @@ const App = () => {
 
   const [notification, setNotification] = useState('')
 
-  const addNew = (anecdote) => {
+  const addNew = (anecdote) => {    
     anecdote.id = Math.round(Math.random() * 10000)
     setAnecdotes(anecdotes.concat(anecdote))
+    setNotification(`new anecdote "${anecdote.content}" added successfully`)
+    setTimeout(() => setNotification(''), 5000)
   }
 
   const anecdoteById = (id) =>
@@ -49,6 +52,7 @@ const App = () => {
 
   return (
     <div>
+      <Notification notification={notification}/>
       <h1>Software anecdotes</h1>
       <Menu addNew={addNew} anecdotes={anecdotes} anecdote={anecdote}/>      
       <Footer />
