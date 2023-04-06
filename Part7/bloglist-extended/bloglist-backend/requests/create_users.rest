@@ -1,0 +1,56 @@
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "samson",   
+    "user": "Samson Drake",
+    "password": "Drake123"    
+}
+
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "aaron",   
+    "user": "Aaron Sweet",
+    "password": "Aaron123"    
+}
+
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "user": "Laila M",
+    "password": "Qwerty34"
+}
+
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "anita",
+    "user": "Anita Singh",
+    "password": "123fourF"
+}
+
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "paul",
+    "user": "Paul Samuel"
+}
+
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "paul",
+    "user": "Paul M",
+    "password": "paulson"
+}
