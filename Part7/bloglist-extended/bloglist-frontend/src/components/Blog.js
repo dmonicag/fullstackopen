@@ -1,8 +1,11 @@
 import {  useState } from 'react'
-import blogService from '../services/blogs'
 import PropTypes from 'prop-types'
+import { add_Like, delete_Blog } from '../reducers/BlogReducer'
+import { useDispatch } from 'react-redux'
+import { notify } from '../reducers/NotificationReducer'
 
-const Blog = ({ blog, addLike, handleDelete, user }) => {
+const Blog = ({ blog, user }) => {
+  const dispatch = useDispatch()
   const [blogsview, setblogView] = useState(false)
   const hideWhenVisible = { display: blogsview ? 'none' : '' }
   const showWhenVisible = { display: blogsview ? '' : 'none' }
@@ -14,20 +17,28 @@ const Blog = ({ blog, addLike, handleDelete, user }) => {
     borderWidth: 1,
     marginBottom: 5,
   }
+  const addLike = async (id) => {
+    const likeObject = { ...blog, likes: blog.likes + 1 }
+    dispatch(add_Like(likeObject,id))
+    dispatch(notify(` You voted for '${blog.title}'`, 'success'))
+  }
 
-  const handleLike = async () => {
-    const blogs = await blogService.getAll()
-    const blogToUpdate = blogs.find(b => b.id === blog.id)
-    const likeObject = { ...blogToUpdate, likes: blogToUpdate.likes+1 }
-    addLike(likeObject, blogToUpdate.id)
+  const handleDelete = async (blog) => {
+    if(window.confirm('Delete blog "' + blog.title + '"?')){
+      try{
+        dispatch(delete_Blog(blog))
+        dispatch(notify('Blog deleted successfully', 'success'))
+      }
+      catch(error){
+        dispatch(notify(error.message, 'error'))
+      }
+    }
   }
 
   const userAddedBlog = blog.user.id
 
   Blog.propTypes = {
     blog: PropTypes.object.isRequired,
-    addLike: PropTypes.func.isRequired,
-    handleDelete: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired
   }
 
@@ -45,14 +56,14 @@ const Blog = ({ blog, addLike, handleDelete, user }) => {
         </span>
         <span>
           <b>Likes: </b>{blog.likes}&nbsp;
-          <button className="likebtn" id="like" onClick={handleLike}>like</button>
+          <button className="likebtn" id="like" onClick={() => addLike(blog.id)}>like</button>
         </span>
         <span>
           <b>Added by: </b>
           {blog.user.user}
           &ensp;
           {(user.user.id === userAddedBlog) ?
-            <button className="deletebtn" id="delete" onClick={handleDelete} style={showWhenVisible}>Remove Blog</button>
+            <button className="deletebtn" id="delete" onClick={() => handleDelete(blog)} style={showWhenVisible}>Remove Blog</button>
             :
             null
           }

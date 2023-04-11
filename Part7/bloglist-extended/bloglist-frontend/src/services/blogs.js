@@ -33,4 +33,9 @@ const deleteBlog = async (id) => {
   return response.data
 }
 
-export default { getAll, setToken, create, updateLikes, deleteBlog }
+const getByID = async (id) => {
+  const response = await axios.get(`${baseUrl}/${id}`)
+  return response.data
+}
+
+export default { getAll, setToken, create, updateLikes, deleteBlog, getByID }

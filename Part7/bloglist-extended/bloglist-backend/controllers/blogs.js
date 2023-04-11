@@ -54,7 +54,7 @@ blogsRouter.put('/:id', async (request, response) => {
   await Blog.findByIdAndUpdate(request.params.id,
     updated_blog ,
     { new: true })
-  response.status(200).json({ info: 'update successful' })
+  response.status(200).json(body)
 })
 
 blogsRouter.delete('/:id', tokenExtractor, userExtractor, async (request, response) => {

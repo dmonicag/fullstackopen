@@ -1,14 +1,30 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { notify } from '../reducers/NotificationReducer'
+import { addNewBlog } from '../reducers/BlogReducer'
 
-const BlogForm = ({ createBlog }) => {
+const BlogForm = ({ toggleRef }) => {
+  const dispatch = useDispatch()
+
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
-  const addBlog = (event) => {
+
+  const addBlog = async (event) => {
     event.preventDefault()
-    createBlog({ title: title, author: author, url: url })
-    event.target.reset()
+    toggleRef.current.changeVisibility()
+    const new_Blog = { title: title, author: author, url: url }
+    setTitle('')
+    setAuthor('')
+    setUrl('')
+    try{
+      dispatch(addNewBlog(new_Blog))
+      dispatch(notify(`Blog '${new_Blog.title}' added successfully`, 'success'))
+    }
+    catch(error) {
+      dispatch(notify(error.message, 'error'))
+    }
   }
 
   return (
@@ -16,7 +32,7 @@ const BlogForm = ({ createBlog }) => {
       <div>
         <h2>Add a new Blog</h2>
         <p>
-          Title:{' '}
+          Title:
           <input
             type="text"
             value={title}
@@ -26,7 +42,7 @@ const BlogForm = ({ createBlog }) => {
           />
         </p>
         <p>
-          Author:{' '}
+          Author:
           <input
             type="text"
             value={author}
@@ -36,8 +52,7 @@ const BlogForm = ({ createBlog }) => {
           />
         </p>
         <p>
-          {' '}
-          URL:{' '}
+          URL:
           <input
             type="text"
             value={url}
