@@ -2,9 +2,11 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { notify } from '../reducers/NotificationReducer'
 import { addNewBlog } from '../reducers/BlogReducer'
+import { useNavigate } from 'react-router-dom'
 
 const BlogForm = ({ toggleRef }) => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
@@ -21,6 +23,7 @@ const BlogForm = ({ toggleRef }) => {
     try{
       dispatch(addNewBlog(new_Blog))
       dispatch(notify(`Blog '${new_Blog.title}' added successfully`, 'success'))
+      navigate('/blogs')
     }
     catch(error) {
       dispatch(notify(error.message, 'error'))

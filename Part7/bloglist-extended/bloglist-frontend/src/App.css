@@ -19,13 +19,13 @@
   }
 
   table {
-    width: 50%;
+    width: 20%;
     border-collapse: collapse;
   }
 
   td, th {
     text-align: left;
-    width: 50%;
+    width: 20%;
   }
   span {
     display: block;

@@ -5,17 +5,21 @@ import { notify } from './NotificationReducer'
 
 const initialState = null
 
-const userSlice = createSlice({
-  name: 'users',
+const loginSlice = createSlice({
+  name: 'loggedUser',
   initialState,
   reducers: {
     setUser (state, action){
       return action.payload
+    },
+    // eslint-disable-next-line no-unused-vars
+    clearUser (state, action){
+      return null
     }
   }
 })
 
-export const { setUser } = userSlice.actions
+export const { setUser, clearUser } = loginSlice.actions
 
 export const initializeUser = () => {
   return async dispatch => {
@@ -44,4 +48,12 @@ export const loginUser = (loginObject) => {
   }
 }
 
-export default userSlice.reducer
+export const logoutUser = () => {
+  return async dispatch => {
+    window.localStorage.clear()
+    window.location.reload()
+    dispatch(clearUser())
+  }
+}
+
+export default loginSlice.reducer

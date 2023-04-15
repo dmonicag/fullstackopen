@@ -4,18 +4,17 @@ import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/BlogReducer'
-import { initializeUser } from './reducers/UserReducer'
-import DisplayBlogList from './components/DisplayBlogList'
+import { initializeUser } from './reducers/LoginReducer'
+import LoginLandingPage from './components/LoginLandingPage'
 
 const App = () => {
   const dispatch = useDispatch()
-
   useEffect(() => {
     dispatch(initializeBlogs())
     dispatch(initializeUser())
   }, [dispatch])
 
-  const user = useSelector((state) => state.user)
+  const user = useSelector((state) => state.loggedUser)
 
   return(
     <div>
@@ -24,9 +23,10 @@ const App = () => {
       {user === null ?
         <LoginForm/>
         :
-        <DisplayBlogList/>
+        <LoginLandingPage/>
       }
     </div>
-  )}
+  )
+}
 
 export default App
