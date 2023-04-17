@@ -19,7 +19,7 @@ const App = () => {
   const user = useSelector((state) => state.loggedUser)
 
   return(
-    <div>
+    <div className='container'>
       <h1>BlogList App</h1>
       <Notification/>
       {user === null ?

@@ -8,6 +8,7 @@ import BlogList from './BlogList'
 import UserInfo from './UserInfo'
 import { logoutUser } from '../reducers/LoginReducer'
 import Blog from './Blog'
+import { Navbar, Nav } from 'react-bootstrap'
 
 const LoginLandingPage = () => {
   const blogFormRef = useRef()
@@ -31,12 +32,23 @@ const LoginLandingPage = () => {
 
   return(
     <div>
-      <div>
-        <Link style={padding} to="/users">Users</Link>
-        <Link style={padding} to="/blogs">Blogs</Link>
+      <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="mr-auto">
+            <Nav.Link href="#" as="span">
+              <Link style={padding} to="/users">Users</Link>
+            </Nav.Link>
+
+            <Nav.Link href="#" as="span">
+              <Link style={padding} to="/blogs">Blogs</Link>
+            </Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
+
         Logged in as {user.user.user}&nbsp;
-        <button onClick={handleLogout}>Log Out</button>
-      </div>
+      <button onClick={handleLogout}>Log Out</button>
       <div>
         <Togglable buttonLabel='Add Blog' ref={blogFormRef}>
           <BlogForm toggleRef={blogFormRef} />
