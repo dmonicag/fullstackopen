@@ -5,6 +5,7 @@ import Notification from './components/Notification'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/BlogReducer'
 import { initializeUser } from './reducers/LoginReducer'
+import { getAllUsers } from './reducers/UsersReducer'
 import LoginLandingPage from './components/LoginLandingPage'
 
 const App = () => {
@@ -12,6 +13,7 @@ const App = () => {
   useEffect(() => {
     dispatch(initializeBlogs())
     dispatch(initializeUser())
+    dispatch(getAllUsers())
   }, [dispatch])
 
   const user = useSelector((state) => state.loggedUser)

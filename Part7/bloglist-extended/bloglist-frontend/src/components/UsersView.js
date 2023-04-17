@@ -1,16 +1,8 @@
 import { useSelector } from 'react-redux'
 import '../App.css'
 import { Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { getAllUsers } from '../reducers/UsersReducer'
-import { useEffect } from 'react'
 
 const UsersView = () => {
-  const dispatch = useDispatch()
-  useEffect(() => {
-    dispatch(getAllUsers())
-  }, [dispatch])
-
   const users = useSelector(state => state.users)
   return(
     <div>

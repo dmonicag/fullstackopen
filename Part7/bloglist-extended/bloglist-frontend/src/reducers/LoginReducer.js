@@ -12,9 +12,8 @@ const loginSlice = createSlice({
     setUser (state, action){
       return action.payload
     },
-    // eslint-disable-next-line no-unused-vars
     clearUser (state, action){
-      return null
+      return action.payload
     }
   }
 })
@@ -52,7 +51,7 @@ export const logoutUser = () => {
   return async dispatch => {
     window.localStorage.clear()
     window.location.reload()
-    dispatch(clearUser())
+    dispatch(clearUser(null))
   }
 }
 
