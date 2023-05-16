@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-//const Author = require('./models/Author')
 require('./Author')
 
 const uniqueValidator = require('mongoose-unique-validator')
