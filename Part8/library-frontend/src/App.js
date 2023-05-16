@@ -24,7 +24,7 @@ const App = () => {
     localStorage.clear()
     client.resetStore()
     setPage('authors')
-    setErrorMessage("You are logged out")
+    notify("you are logged out")
   }
 
   return (
