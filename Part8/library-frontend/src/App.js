@@ -5,6 +5,7 @@ import NewBook from './components/NewBook'
 import LoginForm from './components/LoginForm'
 import Notify from './components/Notify'
 import { useApolloClient } from '@apollo/client'
+import './App.css'
 
 const App = () => {
   const [page, setPage] = useState('authors')

@@ -1,0 +1,10 @@
+table {
+    table-layout: auto;
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  td, th {
+    text-align: left;
+    width: 20%;
+  }
