@@ -5,7 +5,10 @@ import { useState } from 'react'
 const Authors = (props) => {
   const result = useQuery(ALL_AUTHORS)
   const [ changeYear ] = useMutation(EDIT_BORN_YEAR, {
-    refetchQueries: [{ query: ALL_AUTHORS }]
+    refetchQueries: [{ query: ALL_AUTHORS }],
+    onError: (error) => {
+      props.setError(error.message)
+    },
   })
   const [author, setAuthor] = useState('')
   const [year, setYear] = useState('')
