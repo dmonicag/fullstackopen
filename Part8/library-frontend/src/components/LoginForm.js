@@ -12,7 +12,7 @@ const LoginForm = ({ setToken, setError, show, setPage }) => {
         },
         onCompleted: () => {
             setPage('authors')
-        }
+        },
     })
 
     useEffect(() => {

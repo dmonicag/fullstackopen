@@ -20,7 +20,7 @@ const httpLink = createHttpLink({
 
 const client = new ApolloClient({
     cache: new InMemoryCache(),
-    link: authLink.concat(httpLink)
+    link: authLink.concat(httpLink),
 })
 
 ReactDOM.createRoot(document.getElementById('root')).render(
