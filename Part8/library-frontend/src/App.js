@@ -9,6 +9,22 @@ import './App.css'
 import Recommend from './components/Recommend'
 import { ALL_BOOKS, BOOK_ADDED } from './queries'
 
+export const updateCache = (cache, query, addedBook) => {
+  const uniqByTitle = (a) => {
+    let seen = new Set()
+    return a.filter((item) => {
+      let k = item.title
+      return seen.has(k) ? false : seen.add(k)
+    })
+  }
+
+  cache.updateQuery(query, ({ allBooks }) => {
+    return{
+      allBooks: uniqByTitle(allBooks.concat(addedBook))
+    }
+  })
+}
+
 const App = () => {
   const [page, setPage] = useState('authors')
   const [token, setToken] = useState(null)
@@ -19,13 +35,8 @@ const App = () => {
     onData: ({ data }) => {
       const addedBook = data.data.bookAdded
       window.alert(`${addedBook.title} added successfully`)
-
-      client.cache.updateQuery({ query: ALL_BOOKS }, ({ allBooks }) => {
-        return{
-          allBooks: allBooks.concat(addedBook)
-        }
-      })
-    }
+      updateCache(client.cache, { query: ALL_BOOKS }, addedBook)
+    },
   })
 
   const notify = (message) => {
@@ -63,7 +74,7 @@ const App = () => {
 
       <Authors show={page === 'authors'} setError={notify} />
       <Books show={page === 'books'} />
-      <NewBook show={page === 'add'} setError={notify}/>
+      <NewBook show={page === 'add'} setError={notify} setPage={setPage}/>
       <LoginForm show={page === 'login'} setToken={setToken} setError={notify} setPage={setPage}/>
       <Recommend show={page === 'recommend'}/>
 
