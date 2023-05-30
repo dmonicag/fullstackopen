@@ -1,10 +1,25 @@
-import { useQuery } from '@apollo/client'
+import { useQuery, useLazyQuery } from '@apollo/client'
 import { ALL_BOOKS } from '../queries'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const Books = (props) => {
+  const [genre, setGenre] = useState('all genres')
+  const [books, setBooks] = useState(null)
+  const [booksByGenre, setBooksbyGenre] = useState(null)
+
   const result = useQuery(ALL_BOOKS)
-  const [genre, setGenre] = useState('all')
+
+  const [getBooksbyGenre] = useLazyQuery(ALL_BOOKS, {
+    onCompleted: data => setBooksbyGenre(data.allBooks),
+    fetchPolicy: "no-cache",
+  })
+
+  useEffect(() => {
+    if (result.data) {
+      setBooks(result.data.allBooks)
+      setBooksbyGenre(result.data.allBooks)
+    }
+  }, [result.data])
 
   if (!props.show) {
     return null
@@ -13,10 +28,17 @@ const Books = (props) => {
     return null
   }
 
-  const books = result.data.allBooks
-
   const flattened = books.flatMap((b) => b.genres)
-  const genreSet = new Set(flattened)
+  const genreSet = [...new Set(flattened)].concat('all genres')
+
+  const handleClick = (genre) => {
+    setGenre(genre)
+    if(genre === 'all genres'){
+      setBooksbyGenre(result.data.allBooks)
+      return
+    }
+    getBooksbyGenre({ variables: { genre: genre } })
+  }
 
   return (
     <div>
@@ -30,8 +52,7 @@ const Books = (props) => {
             <th>Author</th>
             <th>Published</th>
           </tr>
-          {books
-          .filter((a) => (genre !== 'all' ? a.genres.includes(genre) : a)) 
+          {booksByGenre         
           .map((a) => (
             <tr key={a.title}>
               <td>{a.title}</td>
@@ -45,9 +66,9 @@ const Books = (props) => {
       <div>
         <p>
         {Array.from(genreSet).map((b) => (
-          <button key={b} onClick={() => setGenre(b)}>{b}</button>
+          <button key={b} onClick={() => handleClick(b)}>{b}</button>
         ))}
-        <button onClick={() => setGenre('all')}>all genres</button>
+        
         </p>
       </div>
     </div>
