@@ -3,6 +3,8 @@ const Book = require('./models/Book')
 const { GraphQLError } = require('graphql')
 const jwt = require('jsonwebtoken')
 const User = require('./models/User')
+const { PubSub } = require('graphql-subscriptions')
+const pubsub = new PubSub()
 
 const resolvers = {
     Query: {
@@ -30,7 +32,7 @@ const resolvers = {
         const author = await Book.find({ author: root.id })
         return author.length
       }
-    },
+  },
    
     Mutation: {
       addBook: async (root, args, context) => {
@@ -65,6 +67,7 @@ const resolvers = {
             }
           })
         }
+        pubsub.publish('BOOK_ADDED', { bookAdded: book })
         return book
       },
       editAuthor: async (root, args, context) => {
@@ -97,7 +100,7 @@ const resolvers = {
       },
 
       createUser: async (root, args) => {
-        const user = new User({ username: args.username })
+        const user = new User({ username: args.username, favoriteGenre: args.favoriteGenre })
         return user.save()
         .catch(error => {
             throw new GraphQLError('Creating user failed', {
@@ -125,6 +128,12 @@ const resolvers = {
         }
 
         return { value: jwt.sign(userForToken, process.env.JWT_SECRET) }
+      },
+    },
+
+    Subscription: {
+      bookAdded: {
+        subscribe: () => pubsub.asyncIterator('BOOK_ADDED')
       },
     },
   }
