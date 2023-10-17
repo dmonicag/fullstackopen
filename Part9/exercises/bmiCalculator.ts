@@ -1,5 +1,8 @@
 type Result = 'Underweight' | 'Normal' | 'Overweight' | 'Obese';
 
+const weight: number = Number(process.argv[2])
+const height: number = Number(process.argv[3])
+
 const calculateBmi = (weight: number, height: number): Result => {
     const heightInMeters = height/100
     const bmi = weight / (heightInMeters ** 2)
@@ -15,6 +18,6 @@ const calculateBmi = (weight: number, height: number): Result => {
     }   
   }
 
-console.log(calculateBmi(74, 180));
+console.log(calculateBmi(weight, height));
   
   
