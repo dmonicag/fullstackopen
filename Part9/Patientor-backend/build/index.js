@@ -6,7 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
-const PORT = 3000;
+const cors_1 = __importDefault(require("cors"));
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+app.use((0, cors_1.default)());
+const PORT = 3001;
 app.get("/api/ping", (_req, res) => {
     console.log("welcome!");
     res.send("pong");
