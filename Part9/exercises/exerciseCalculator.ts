@@ -10,17 +10,16 @@ interface Results {
   average: number
 }
 
-const calculateExercises = (args: string[]): Results => {
-  const argsObj = getArguments(args);
-  const target = argsObj.target;
-  const periodLength = argsObj.trainingDays.length;
-  const trainingDays = argsObj.trainingDays.filter(d => d !== 0).length;
+const calculateExercises = (hours: Array<number>, targetHours: number): Results => {
+  const target = targetHours;
+  const periodLength = hours.length;
+  const trainingDays = hours.filter(d => d !== 0).length;
    
-  const weeklyhours =  argsObj.trainingDays.reduce((a,b) => a + b, 0);
-  const averageHours = weeklyhours/argsObj.trainingDays.length;
+  const weeklyhours =  hours.reduce((a,b) => a + b, 0);
+  const averageHours = weeklyhours/hours.length;
  
   const average = averageHours;
-  const success = averageHours >= argsObj.target;
+  const success = averageHours >= targetHours;
   const rating = ratingCalculation(average, target);
   const ratingDescription = descriptionText(rating);
 
@@ -36,7 +35,8 @@ const calculateExercises = (args: string[]): Results => {
 };
 
   try {
-    calculateExercises(process.argv);
+    const { trainingDays, target} = getArguments(process.argv);
+    calculateExercises(trainingDays, target);
   } 
   catch (error: unknown) {
     let errorMessage = 'Error: ';
@@ -46,4 +46,5 @@ const calculateExercises = (args: string[]): Results => {
     console.log(errorMessage);
   }
 
-console.log(calculateExercises(process.argv));
+//console.log(calculateExercises(process.argv));
+export default calculateExercises;
