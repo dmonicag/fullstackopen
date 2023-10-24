@@ -1,9 +1,11 @@
 type Result = 'Underweight' | 'Normal' | 'Overweight' | 'Obese';
 
-const weight: number = Number(process.argv[2])
-const height: number = Number(process.argv[3])
+interface values {
+  inputWeight: number,
+  inputHeight: number
+}
 
-const calculateBmi = (args: string[]): Result => {
+const parseArgs = (args: string[]): values => {
   if(args.length < 4){
     throw new Error("Please add arguments:")
   }
@@ -16,8 +18,15 @@ const calculateBmi = (args: string[]): Result => {
     throw new Error("inputs are not numbers")
   }
 
-  const heightInMeters = Number(args[2])/100
-  const bmi = Number(args[3]) / (heightInMeters ** 2)
+  return {
+    inputWeight: Number(args[2]),
+    inputHeight: Number(args[3])
+  }
+}
+
+const calculateBmi = (weight: number, height: number): Result => {
+  const heightInMeters = height/100
+  const bmi = weight / (heightInMeters ** 2)
         
   if(bmi <= 18.5){
     return 'Underweight'
@@ -30,7 +39,8 @@ const calculateBmi = (args: string[]): Result => {
 }
 
   try{
-    calculateBmi(process.argv);
+    const { inputWeight, inputHeight } = parseArgs(process.argv)
+    calculateBmi(inputWeight, inputHeight)
   }
   catch(error: unknown){
     let errorMessage = "Error:"
@@ -40,6 +50,6 @@ const calculateBmi = (args: string[]): Result => {
     console.log(errorMessage)
   }
 
-console.log(calculateBmi(process.argv));
+export default calculateBmi
   
   
