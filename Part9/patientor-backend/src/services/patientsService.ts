@@ -20,10 +20,8 @@ const getNonSsnEntries = (): NonSsnEntries[] => {
 };
 
 const addPatient = (entry: NewPatientEntry): Patient => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
     const id = uuid();
     const newPatient = {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         id,
         ...entry
     };
