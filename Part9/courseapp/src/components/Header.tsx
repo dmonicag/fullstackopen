@@ -1,7 +1,7 @@
 const Header = ({course}: {course: string}) => {
     return(
         <>
-            {course}
+            <h1>{course}</h1>
         </>
     )
 }
