@@ -50,17 +50,44 @@ const App = () => {
     <div style={{'color' : 'red'}}>{errors}</div> : <></>}
     <div>
     <form onSubmit={addDiary}>
-      <label>date: </label>
-      <input value={date} onChange={({target}) => setDate(target.value)}/><br/>
-      <label>visibility: </label>
-      <input value={visibility} onChange={({target}) => setVisibility(target.value)}/><br/>
-      <label>weather: </label>
-      <input value={weather} onChange={({target}) => setWeather(target.value)}/><br/>
-      <label>comment: </label>
+      <label>Date: </label>
+      <input type='date' value={date} onChange={({target}) => setDate(target.value)}/><br/>
+
+      <p>Visibility: </p>
+        <input type='radio' id='great' value='great' onChange={({target}) => setVisibility(target.value)}></input>
+        <label htmlFor='great'>Great</label>
+
+        <input type='radio' id='good' value='good' onChange={({target}) => setVisibility(target.value)}></input>
+        <label htmlFor='good'>Good</label>
+        
+        <input type='radio' id='ok' value='ok' onChange={({target}) => setVisibility(target.value)}></input>
+        <label htmlFor='ok'>Ok</label>
+        
+        <input type='radio' id='poor' value='poor' onChange={({target}) => setVisibility(target.value)}></input>
+        <label htmlFor='poor'>Poor</label>
+
+      <p>Weather: </p>
+        <input type='radio' id='sunny' value='sunny' onChange={({target}) => setWeather(target.value)}></input>
+        <label htmlFor='sunny'>Sunny</label>
+
+        <input type='radio' id='rainy' value='rainy' onChange={({target}) => setWeather(target.value)}></input>
+        <label htmlFor='rainy'>Rainy</label>
+
+        <input type='radio' id='cloudy' value='cloudy' onChange={({target}) => setWeather(target.value)}></input>
+        <label htmlFor='cloudy'>Cloudy</label>
+
+        <input type='radio' id='stormy' value='stormy' onChange={({target}) => setWeather(target.value)}></input>
+        <label htmlFor='stormy'>Stormy</label>
+
+        <input type='radio' id='windy' value='windy' onChange={({target}) => setWeather(target.value)}></input>
+        <label htmlFor='windy'>Windy</label>
+
+      <p>Comment: </p>
       <input value={comment} onChange={({target}) => setComment(target.value)}/><br/>
       <button type='submit'>Add</button>
     </form>
     </div>
+
     <h1>Diary Entries</h1>
     {diaries.map(d => (
       <p key={d.id}><strong>{d.date}</strong><br/>
