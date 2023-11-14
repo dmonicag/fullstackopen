@@ -8,6 +8,7 @@ const App = () => {
   const [visibility, setVisibility] = useState('')
   const [weather, setWeather] = useState('')
   const [comment, setComment] = useState('')
+  const [errors, setErrors] = useState(null)
 
   useEffect(() => {
     axios
@@ -17,24 +18,37 @@ const App = () => {
       })
   },[])
 
-  const addDiary = (event: React.SyntheticEvent) => {
+  const addDiary = async (event: React.SyntheticEvent) => {
     event.preventDefault()
-    axios
+    try{
+    const newEntry = await axios
       .post<Diary>("http://localhost:3000/api/diaries", {
         date: date,
         visibility: visibility,
         weather: weather,
         comment: comment
       })
-      .then(response => {
-        setDiaries(diaries.concat(response.data))
-      })
-
+      setDiaries(diaries.concat(newEntry.data))
+    }
+    catch(error){
+      if(axios.isAxiosError(error)){
+        setErrors(error.response?.data)
+        setTimeout(() => {
+          setErrors(null)
+        }, 5000)
+      }
+      else{
+        console.error(error)
+      }
+    }
   };
 
   return (
   <div>
     <h1>Add New Entry</h1>
+    {errors ?
+    <div style={{'color' : 'red'}}>{errors}</div> : <></>}
+    <div>
     <form onSubmit={addDiary}>
       <label>date: </label>
       <input value={date} onChange={({target}) => setDate(target.value)}/><br/>
@@ -46,6 +60,7 @@ const App = () => {
       <input value={comment} onChange={({target}) => setComment(target.value)}/><br/>
       <button type='submit'>Add</button>
     </form>
+    </div>
     <h1>Diary Entries</h1>
     {diaries.map(d => (
       <p key={d.id}><strong>{d.date}</strong><br/>
@@ -57,4 +72,4 @@ const App = () => {
   )
 }
 
-export default App
+export default App;
